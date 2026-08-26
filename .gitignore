@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+miniprogram_npm/
+
+# macOS
+.DS_Store
+
+# WeChat DevTools
+project.private.config.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build output
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
