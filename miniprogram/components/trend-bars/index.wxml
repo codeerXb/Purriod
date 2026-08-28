@@ -1,0 +1,14 @@
+<view class="chart-component">
+  <canvas type="2d" id="trendCanvas" class="trend-canvas" bindtouchend="onTouchEnd"></canvas>
+  <view wx:if="{{activeItem}}" class="detail-bubble">
+    <text>{{activeItem.label}} · {{activeItem.valueLabel}}</text>
+    <text class="detail-delta">{{activeItem.deltaLabel}}</text>
+  </view>
+  <view class="value-list">
+    <view wx:for="{{bars}}" wx:key="key" class="value-row">
+      <text>{{item.label}}</text>
+      <text class="value-number">{{item.valueLabel}}</text>
+      <text>{{item.deltaLabel}}</text>
+    </view>
+  </view>
+</view>

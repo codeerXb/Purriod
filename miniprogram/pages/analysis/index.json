@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "周期分析",
+  "usingComponents": {
+    "trend-bars": "/components/trend-bars/index",
+    "duration-chart": "/components/duration-chart/index"
+  }
+}

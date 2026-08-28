@@ -1,0 +1,39 @@
+.trend-canvas {
+  width: 100%;
+  height: 420rpx;
+}
+
+.detail-bubble {
+  display: flex;
+  justify-content: space-between;
+  gap: 18rpx;
+  margin-top: 10rpx;
+  padding: 18rpx 22rpx;
+  border-radius: 20rpx;
+  color: #5D5055;
+  background: #FFF3F5;
+  font-size: 23rpx;
+}
+
+.detail-delta {
+  color: #D4768A;
+}
+
+.value-list {
+  margin-top: 18rpx;
+  border-top: 1rpx solid #F5E1E6;
+}
+
+.value-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1.4fr;
+  gap: 12rpx;
+  padding: 14rpx 0;
+  color: #8B7D82;
+  font-size: 22rpx;
+}
+
+.value-number {
+  color: #5D5055;
+  font-weight: 700;
+}

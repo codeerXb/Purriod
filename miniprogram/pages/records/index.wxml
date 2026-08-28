@@ -56,5 +56,15 @@
     </button>
   </view>
 
+  <view class="card analysis-entry" bindtap="goAnalysis">
+    <view>
+      <view class="section-title">查看周期分析</view>
+      <view class="analysis-entry-desc">平均周期、经期天数与最近趋势</view>
+    </view>
+    <view class="analysis-entry-icon">
+      <text></text><text></text><text></text>
+    </view>
+  </view>
+
   <view wx:if="{{isLoading}}" class="loading-hint">正在整理周期数据…</view>
 </view>

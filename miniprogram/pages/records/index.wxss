@@ -179,3 +179,37 @@
   font-size: 24rpx;
   text-align: center;
 }
+
+.analysis-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.analysis-entry-desc {
+  margin-top: 10rpx;
+  color: #8B7D82;
+  font-size: 24rpx;
+}
+
+.analysis-entry-icon {
+  width: 86rpx;
+  height: 66rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 7rpx;
+  padding: 10rpx;
+  border-radius: 20rpx;
+  background: #FFF3F5;
+}
+
+.analysis-entry-icon text {
+  width: 12rpx;
+  border-radius: 8rpx 8rpx 3rpx 3rpx;
+  background: #D4768A;
+}
+
+.analysis-entry-icon text:nth-child(1) { height: 19rpx; opacity: 0.5; }
+.analysis-entry-icon text:nth-child(2) { height: 31rpx; opacity: 0.72; }
+.analysis-entry-icon text:nth-child(3) { height: 43rpx; }

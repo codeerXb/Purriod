@@ -1,0 +1,63 @@
+<view class="page analysis-page">
+  <view class="analysis-hero">
+    <view>
+      <view class="page-title">周期分析</view>
+      <view class="page-subtitle">只描述你的个人记录变化，不做健康诊断</view>
+    </view>
+    <view class="hero-chart">
+      <view class="hero-bar short"></view>
+      <view class="hero-bar middle"></view>
+      <view class="hero-bar tall"></view>
+    </view>
+  </view>
+
+  <view class="summary-grid">
+    <view class="summary-card">
+      <view class="summary-value">{{averageCycle}}<text>天</text></view>
+      <view class="summary-label">平均周期</view>
+    </view>
+    <view class="summary-card">
+      <view class="summary-value">{{averagePeriod}}<text>天</text></view>
+      <view class="summary-label">平均经期</view>
+    </view>
+    <view class="summary-card">
+      <view class="summary-value">{{periodCount}}<text>次</text></view>
+      <view class="summary-label">已记经期</view>
+    </view>
+  </view>
+
+  <view class="card chart-card">
+    <view class="chart-header">
+      <view>
+        <view class="section-title">周期长度趋势</view>
+        <view class="chart-subtitle">最近最多六个完整周期间隔</view>
+      </view>
+      <view class="chart-accent sage"></view>
+    </view>
+    <trend-bars wx:if="{{hasCycleTrend}}" bars="{{cycleBars}}" />
+    <view wx:else class="empty-chart">
+      <view class="empty-orbit"></view>
+      <view class="empty-title">再记录一次经期后生成趋势</view>
+      <view class="empty-desc">至少需要两次“月经开始”记录</view>
+    </view>
+  </view>
+
+  <view class="card chart-card">
+    <view class="chart-header">
+      <view>
+        <view class="section-title">经期天数趋势</view>
+        <view class="chart-subtitle">虚线柱表示尚未明确记录结束日期</view>
+      </view>
+      <view class="chart-accent purple"></view>
+    </view>
+    <duration-chart wx:if="{{hasPeriodTrend}}" bars="{{periodBars}}" />
+    <view wx:else class="empty-chart">
+      <view class="empty-drops">···</view>
+      <view class="empty-title">记录月经开始后显示经期天数</view>
+      <view class="empty-desc">明确记录结束日期后，统计会更贴近实际</view>
+    </view>
+  </view>
+
+  <view class="analysis-note">所有日期与天数均为个人记录和周期估算结果，仅供日常参考。</view>
+  <view wx:if="{{isLoading}}" class="loading-hint">正在整理你的记录…</view>
+</view>

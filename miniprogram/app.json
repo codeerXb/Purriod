@@ -4,7 +4,8 @@
     "pages/records/index",
     "pages/profile/index",
     "pages/settings/index",
-    "pages/record-editor/index"
+    "pages/record-editor/index",
+    "pages/analysis/index"
   ],
   "window": {
     "backgroundColor": "#FAF0F2",

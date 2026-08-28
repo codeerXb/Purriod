@@ -147,4 +147,8 @@ Page({
       url: `/pages/record-editor/index?date=${this.data.selectedDate}`,
     });
   },
+
+  goAnalysis() {
+    wx.navigateTo({ url: "/pages/analysis/index" });
+  },
 });
