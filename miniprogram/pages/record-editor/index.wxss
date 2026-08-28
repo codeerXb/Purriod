@@ -1,0 +1,87 @@
+.editor-page {
+  padding-bottom: 72rpx;
+}
+
+.date-eyebrow {
+  color: #D4768A;
+  font-size: 24rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.editor-card {
+  padding-top: 12rpx;
+  padding-bottom: 12rpx;
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 126rpx;
+  border-bottom: 1rpx solid #F5E1E6;
+}
+
+.switch-row:last-child {
+  border-bottom: 0;
+}
+
+.field-block {
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F5E1E6;
+}
+
+.field-block:last-child {
+  border-bottom: 0;
+}
+
+.field-title {
+  color: #5A4E53;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.field-hint {
+  margin-top: 8rpx;
+  color: #A39399;
+  font-size: 23rpx;
+}
+
+.chip-row {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 20rpx;
+}
+
+.chip-row.wrap {
+  flex-wrap: wrap;
+}
+
+.notes {
+  width: 100%;
+  min-height: 150rpx;
+  margin-top: 18rpx;
+  padding: 22rpx;
+  border-radius: 24rpx;
+  background: #FFF8F9;
+  color: #3D3D3D;
+  font-size: 26rpx;
+}
+
+.save-button {
+  margin-top: 34rpx;
+}
+
+.delete-button {
+  height: 76rpx;
+  margin-top: 18rpx;
+  color: #B65F72;
+  font-size: 26rpx;
+}
+
+.sync-message {
+  margin-top: 16rpx;
+  color: #8B7D82;
+  font-size: 24rpx;
+  text-align: center;
+}

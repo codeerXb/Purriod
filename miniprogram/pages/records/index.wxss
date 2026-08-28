@@ -1,7 +1,22 @@
-.calendar-header {
+.records-page {
+  padding-bottom: 72rpx;
+}
+
+.header-row,
+.calendar-header,
+.day-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.header-orbit {
+  width: 72rpx;
+  height: 72rpx;
+  border: 12rpx solid #F0D4DA;
+  border-right-color: #A890C0;
+  border-radius: 50%;
+  opacity: 0.8;
 }
 
 .month-button {
@@ -39,125 +54,128 @@
   width: 76rpx;
   height: 76rpx;
   margin: 0 auto;
+  border: 2rpx solid transparent;
   border-radius: 24rpx;
   color: #3D3D3D;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 26rpx;
+  transition: transform 160ms ease;
 }
 
 .calendar-day.muted-day {
   color: #D5C5CA;
+  opacity: 0.62;
+}
+
+.calendar-day.actual-period {
+  color: #984E60;
+  background: #F0D4DA;
+}
+
+.calendar-day.predicted-period:not(.actual-period) {
+  color: #B27785;
+  border-color: #E6B9C3;
+  border-style: dashed;
+  background: #FFF6F8;
+}
+
+.calendar-day.ovulation-range:not(.actual-period):not(.predicted-period) {
+  color: #79648E;
+  background: #F1ECF5;
 }
 
 .calendar-day.today {
-  border: 2rpx solid #F0C4CD;
+  box-shadow: 0 0 0 3rpx #FFFFFF, 0 0 0 6rpx #D4768A;
 }
 
 .calendar-day.selected {
-  color: #FFFFFF;
-  background: #D4768A;
+  border-color: #5D4A51;
+  transform: scale(0.92);
 }
 
-.calendar-day.period:not(.selected) {
-  background: #F6D6DD;
-  color: #D4768A;
-}
-
-.calendar-day.predicted:not(.selected) {
-  background: #FAECEF;
-  color: #C58A98;
-}
-
-.calendar-day.ovulation:not(.selected) {
-  background: #EEE8F5;
-  color: #A890C0;
-}
-
-.day-dot {
+.ovulation-mark {
   position: absolute;
-  bottom: 10rpx;
-  width: 8rpx;
-  height: 8rpx;
+  bottom: 7rpx;
+  width: 9rpx;
+  height: 9rpx;
   border-radius: 50%;
-  background: currentColor;
+  background: #A890C0;
+  box-shadow: 0 0 0 5rpx rgba(168, 144, 192, 0.16);
 }
 
 .legend {
   display: flex;
-  gap: 28rpx;
-  margin-top: 28rpx;
-  color: #9E9E9E;
-  font-size: 24rpx;
+  flex-wrap: wrap;
+  gap: 18rpx 26rpx;
+  margin-top: 30rpx;
+  color: #8B7D82;
+  font-size: 23rpx;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
 }
 
 .legend-dot {
   display: inline-block;
-  width: 14rpx;
-  height: 14rpx;
-  margin-right: 8rpx;
-  border-radius: 50%;
+  width: 16rpx;
+  height: 16rpx;
+  margin-right: 9rpx;
+  border-radius: 6rpx;
 }
 
-.period-dot { background: #D4768A; }
-.predicted-dot { background: #F0C4CD; }
+.actual-dot { background: #D4768A; }
+.predicted-dot { border: 2rpx dashed #D6A6B2; background: #FFF6F8; }
 .ovulation-dot { background: #A890C0; }
+.legend-flower { margin-right: 9rpx; color: #A890C0; }
 
-.switch-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #F5E1E6;
-}
-
-.field-block {
-  margin-top: 28rpx;
-}
-
-.field-title {
-  margin-bottom: 18rpx;
-  color: #6E6066;
+.selected-date {
+  color: #D4768A;
+  font-size: 23rpx;
   font-weight: 700;
 }
 
-.chip-row {
-  display: flex;
-  gap: 16rpx;
-}
-
-.chip-row.wrap {
-  flex-wrap: wrap;
-}
-
-.notes {
-  width: 100%;
-  min-height: 132rpx;
-  margin: 28rpx 0;
-  padding: 22rpx;
-  border-radius: 24rpx;
-  background: #FFF8F9;
-  color: #3D3D3D;
-  font-size: 26rpx;
-}
-
-.analysis-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16rpx;
-  margin-top: 24rpx;
-  text-align: center;
-}
-
-.analysis-value {
-  color: #D4768A;
-  font-size: 34rpx;
-  font-weight: 800;
-}
-
-.analysis-label {
+.day-status {
   margin-top: 8rpx;
-  color: #9E9E9E;
+}
+
+.day-petal {
+  color: #A890C0;
+  font-size: 64rpx;
+}
+
+.summary-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 24rpx;
+}
+
+.summary-tag {
+  padding: 11rpx 18rpx;
+  border-radius: 999rpx;
+  color: #7D646C;
+  background: #FAEDF0;
+  font-size: 23rpx;
+}
+
+.day-detail {
+  margin-top: 22rpx;
+  color: #8B7D82;
+  font-size: 25rpx;
+  line-height: 1.7;
+}
+
+.edit-button {
+  margin-top: 26rpx;
+}
+
+.loading-hint {
+  margin-top: 24rpx;
+  color: #A39399;
   font-size: 24rpx;
+  text-align: center;
 }

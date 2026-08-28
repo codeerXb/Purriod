@@ -1,0 +1,63 @@
+<view class="page editor-page">
+  <view class="date-eyebrow">{{date}}</view>
+  <view class="page-title">记录今天的感受</view>
+  <view class="page-subtitle">只有你主动填写的内容才会保存</view>
+
+  <view class="card editor-card">
+    <view class="switch-row">
+      <view>
+        <view class="field-title">月经开始</view>
+        <view class="field-hint">标记为本次周期的第一天</view>
+      </view>
+      <switch color="#D4768A" checked="{{record.isPeriodStart}}" bindchange="setPeriodStart" />
+    </view>
+    <view class="switch-row">
+      <view>
+        <view class="field-title">月经结束</view>
+        <view class="field-hint">与“月经开始”不能同时选择</view>
+      </view>
+      <switch color="#D4768A" checked="{{record.isPeriodEnd}}" bindchange="setPeriodEnd" />
+    </view>
+  </view>
+
+  <view class="card editor-card">
+    <view class="field-block">
+      <view class="field-title">流量</view>
+      <view class="chip-row">
+        <view wx:for="{{flowOptions}}" wx:key="value" class="chip {{record.flow === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="chooseFlow">{{item.label}}</view>
+      </view>
+    </view>
+    <view class="field-block">
+      <view class="field-title">痛经</view>
+      <view class="chip-row">
+        <view wx:for="{{painOptions}}" wx:key="value" class="chip {{record.pain === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="choosePain">{{item.label}}</view>
+      </view>
+    </view>
+    <view class="field-block">
+      <view class="field-title">白带</view>
+      <view class="chip-row">
+        <view wx:for="{{dischargeOptions}}" wx:key="value" class="chip {{record.discharge === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="chooseDischarge">{{item.label}}</view>
+      </view>
+    </view>
+    <view class="field-block">
+      <view class="field-title">心情</view>
+      <view class="chip-row wrap">
+        <view wx:for="{{moodOptions}}" wx:key="*this" class="chip {{record.mood === item ? 'active' : ''}}" data-value="{{item}}" bindtap="chooseMood">{{item}}</view>
+      </view>
+    </view>
+    <view class="field-block">
+      <view class="field-title">症状</view>
+      <view class="chip-row wrap">
+        <view wx:for="{{symptomItems}}" wx:key="label" class="chip {{item.active ? 'active' : ''}}" data-value="{{item.label}}" bindtap="toggleSymptom">{{item.label}}</view>
+      </view>
+    </view>
+    <view class="field-block">
+      <view class="field-title">备注</view>
+      <textarea class="notes" value="{{record.notes}}" placeholder="想补充点什么？可不填" maxlength="120" bindinput="onNotesInput" />
+    </view>
+  </view>
+
+  <button class="primary-button save-button" loading="{{isSaving}}" bindtap="save">保存记录</button>
+  <button wx:if="{{hasExistingRecord}}" class="delete-button" bindtap="remove">删除这一天的记录</button>
+  <view wx:if="{{syncMessage}}" class="sync-message">{{syncMessage}}</view>
+</view>

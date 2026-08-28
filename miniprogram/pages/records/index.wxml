@@ -1,6 +1,11 @@
 <view class="page records-page">
-  <view class="page-title">记录</view>
-  <view class="page-subtitle">把每天的身体感受轻轻记下来</view>
+  <view class="header-row">
+    <view>
+      <view class="page-title">记录</view>
+      <view class="page-subtitle">月历会把实际记录与预计日期分开显示</view>
+    </view>
+    <view class="header-orbit"></view>
+  </view>
 
   <view class="card calendar-card">
     <view class="calendar-header">
@@ -10,95 +15,46 @@
     </view>
 
     <view class="week-row">
-      <view wx:for="{{['日','一','二','三','四','五','六']}}" wx:key="*this" class="week-day">{{item}}</view>
+      <view wx:for="{{weekDays}}" wx:key="*this" class="week-day">{{item}}</view>
     </view>
 
     <view class="calendar-grid">
       <view
         wx:for="{{calendarDays}}"
         wx:key="date"
-        class="calendar-day {{item.isCurrentMonth ? '' : 'muted-day'}} {{item.isToday ? 'today' : ''}} {{item.isSelected ? 'selected' : ''}} {{item.status}}"
+        class="calendar-day {{item.isCurrentMonth ? '' : 'muted-day'}} {{item.isActualPeriod ? 'actual-period' : ''}} {{item.isPredictedPeriod ? 'predicted-period' : ''}} {{item.isOvulationRange ? 'ovulation-range' : ''}} {{item.isOvulationDay ? 'ovulation-day' : ''}} {{item.isToday ? 'today' : ''}} {{item.isSelected ? 'selected' : ''}}"
         data-date="{{item.date}}"
         bindtap="selectDate"
       >
         <text>{{item.day}}</text>
-        <view class="day-dot" wx:if="{{item.status}}"></view>
+        <view wx:if="{{item.isOvulationDay}}" class="ovulation-mark"></view>
       </view>
     </view>
 
     <view class="legend">
-      <view><text class="legend-dot period-dot"></text>经期</view>
-      <view><text class="legend-dot predicted-dot"></text>预测</view>
-      <view><text class="legend-dot ovulation-dot"></text>排卵</view>
+      <view class="legend-item"><text class="legend-dot actual-dot"></text>经期</view>
+      <view class="legend-item"><text class="legend-dot predicted-dot"></text>预测</view>
+      <view class="legend-item"><text class="legend-dot ovulation-dot"></text>排卵期</view>
+      <view class="legend-item"><text class="legend-flower">●</text>排卵日</view>
     </view>
   </view>
 
-  <view class="card form-card">
-    <view class="section-title">{{selectedDate}}</view>
-
-    <view class="switch-row">
-      <text>月经开始</text>
-      <switch color="#D4768A" checked="{{selectedRecord.isPeriodStart}}" bindchange="setPeriodStart" />
-    </view>
-    <view class="switch-row">
-      <text>月经结束</text>
-      <switch color="#D4768A" checked="{{selectedRecord.isPeriodEnd}}" bindchange="setPeriodEnd" />
-    </view>
-
-    <view class="field-block">
-      <view class="field-title">流量</view>
-      <view class="chip-row">
-        <view wx:for="{{flowOptions}}" wx:key="value" class="chip {{selectedRecord.flow === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="chooseFlow">{{item.label}}</view>
+  <view class="card day-card">
+    <view class="day-card-header">
+      <view>
+        <view class="selected-date">{{selectedDate}}</view>
+        <view class="section-title day-status">{{summary.statusText}}</view>
       </view>
+      <view class="day-petal">◌</view>
     </view>
-
-    <view class="field-block">
-      <view class="field-title">痛经</view>
-      <view class="chip-row">
-        <view wx:for="{{painOptions}}" wx:key="value" class="chip {{selectedRecord.pain === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="choosePain">{{item.label}}</view>
-      </view>
+    <view class="summary-tags" wx:if="{{summary.tags.length}}">
+      <view wx:for="{{summary.tags}}" wx:key="*this" class="summary-tag">{{item}}</view>
     </view>
-
-    <view class="field-block">
-      <view class="field-title">白带</view>
-      <view class="chip-row">
-        <view wx:for="{{dischargeOptions}}" wx:key="value" class="chip {{selectedRecord.discharge === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="chooseDischarge">{{item.label}}</view>
-      </view>
-    </view>
-
-    <view class="field-block">
-      <view class="field-title">心情</view>
-      <view class="chip-row">
-        <view wx:for="{{moodOptions}}" wx:key="*this" class="chip {{selectedRecord.mood === item ? 'active' : ''}}" data-value="{{item}}" bindtap="chooseMood">{{item}}</view>
-      </view>
-    </view>
-
-    <view class="field-block">
-      <view class="field-title">症状</view>
-      <view class="chip-row wrap">
-        <view wx:for="{{symptomOptions}}" wx:key="*this" class="chip {{selectedRecord.symptoms.indexOf(item) >= 0 ? 'active' : ''}}" data-value="{{item}}" bindtap="toggleSymptom">{{item}}</view>
-      </view>
-    </view>
-
-    <textarea class="notes" value="{{selectedRecord.notes}}" placeholder="想补充点什么？可不填" maxlength="120" bindinput="onNotesInput" />
-    <button class="primary-button" bindtap="saveRecord">保存记录</button>
+    <view class="day-detail">{{summary.detailText}}</view>
+    <button class="secondary-button edit-button" bindtap="editSelectedDate">
+      {{summary.hasRecord ? '编辑这一天' : '记录这一天'}}
+    </button>
   </view>
 
-  <view class="card analysis-card">
-    <view class="section-title">周期分析</view>
-    <view class="analysis-grid">
-      <view>
-        <view class="analysis-value">{{analysis.averageCycle}}天</view>
-        <view class="analysis-label">平均周期</view>
-      </view>
-      <view>
-        <view class="analysis-value">{{analysis.averagePeriod}}天</view>
-        <view class="analysis-label">平均经期</view>
-      </view>
-      <view>
-        <view class="analysis-value">{{analysis.periodCount}}次</view>
-        <view class="analysis-label">经期次数</view>
-      </view>
-    </view>
-  </view>
+  <view wx:if="{{isLoading}}" class="loading-hint">正在整理周期数据…</view>
 </view>

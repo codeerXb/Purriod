@@ -1,51 +1,55 @@
-import { buildCalendarDays, formatDate, getMonthTitle, parseDate } from "../../utils/date";
-import { getAnalysis, getPeriodPrediction } from "../../utils/period";
-import { getPeriodRecords, getUserSettings, savePeriodRecord } from "../../utils/storage";
+import {
+  DISCHARGE_LABELS,
+  FLOW_LABELS,
+  PAIN_LABELS,
+  isRecordEmpty,
+} from "../../constants/options";
+import { loadRecords } from "../../repositories/records-repository";
+import { loadSettings } from "../../repositories/settings-repository";
+import { buildPeriodIntervals } from "../../services/period-analysis";
+import { getPeriodPrediction } from "../../services/period-prediction";
 import { PeriodRecord } from "../../types/period";
-
-const FLOW_OPTIONS = [
-  { label: "无", value: "none" },
-  { label: "少", value: "light" },
-  { label: "中", value: "medium" },
-  { label: "多", value: "heavy" },
-];
-
-const PAIN_OPTIONS = [
-  { label: "无", value: "none" },
-  { label: "轻度", value: "mild" },
-  { label: "中度", value: "moderate" },
-  { label: "重度", value: "severe" },
-];
-
-const DISCHARGE_OPTIONS = [
-  { label: "无", value: "none" },
-  { label: "少", value: "light" },
-  { label: "中", value: "medium" },
-  { label: "多", value: "heavy" },
-];
+import {
+  addDays,
+  buildCalendarDays,
+  formatDate,
+  getMonthTitle,
+  isBetween,
+  parseDate,
+} from "../../utils/date";
 
 const WEEK_DAYS = ["日", "一", "二", "三", "四", "五", "六"];
-const MOOD_OPTIONS = ["平静", "开心", "疲惫", "焦虑", "敏感"];
-const SYMPTOM_OPTIONS = ["腹胀", "头痛", "腰酸", "疲劳", "痘痘", "乳房胀痛"];
 
-function buildSymptomItems(selected: string[]) {
-  return SYMPTOM_OPTIONS.map((label) => ({
-    label,
-    active: selected.includes(label),
-  }));
-}
+function selectedSummary(record?: PeriodRecord) {
+  if (!record || isRecordEmpty(record)) {
+    return {
+      hasRecord: false,
+      statusText: "这一天还没有记录",
+      detailText: "可以记录经期状态、身体感受和心情。",
+      tags: [],
+    };
+  }
 
-function createDefaultRecord(date: string): PeriodRecord {
+  const tags = [] as string[];
+  if (record.isPeriodStart) tags.push("月经开始");
+  if (record.isPeriodEnd) tags.push("月经结束");
+  if (record.flow !== "none") tags.push(`流量 ${FLOW_LABELS[record.flow]}`);
+  if (record.pain !== "none") tags.push(`痛经 ${PAIN_LABELS[record.pain]}`);
+  if (record.discharge !== "none") {
+    tags.push(`白带 ${DISCHARGE_LABELS[record.discharge]}`);
+  }
+  if (record.mood) tags.push(record.mood);
+  tags.push(...record.symptoms);
+
   return {
-    date,
-    isPeriodStart: false,
-    isPeriodEnd: false,
-    flow: "none",
-    pain: "none",
-    discharge: "none",
-    mood: "平静",
-    symptoms: [],
-    notes: "",
+    hasRecord: true,
+    statusText: record.isPeriodStart
+      ? "本次经期从这里开始"
+      : record.isPeriodEnd
+        ? "本次经期在这里结束"
+        : "已记录身体状态",
+    detailText: record.notes || "点开后可以继续补充或修改。",
+    tags,
   };
 }
 
@@ -55,21 +59,9 @@ Page({
     currentMonth: formatDate(new Date()),
     calendarDays: [],
     selectedDate: formatDate(new Date()),
-    selectedRecord: createDefaultRecord(formatDate(new Date())),
     weekDays: WEEK_DAYS,
-    flowOptions: FLOW_OPTIONS,
-    painOptions: PAIN_OPTIONS,
-    dischargeOptions: DISCHARGE_OPTIONS,
-    moodOptions: MOOD_OPTIONS,
-    symptomItems: buildSymptomItems([]),
-    analysis: {
-      averageCycle: 28,
-      averagePeriod: 5,
-      recordCount: 0,
-      periodCount: 0,
-      cycleIntervals: [],
-      periodLengths: [],
-    },
+    summary: selectedSummary(),
+    isLoading: true,
   },
 
   onShow() {
@@ -77,36 +69,59 @@ Page({
   },
 
   async loadPage() {
-    const [settings, records] = await Promise.all([getUserSettings(), getPeriodRecords()]);
-    const currentMonthDate = parseDate(this.data.currentMonth);
-    const prediction = getPeriodPrediction(records, settings);
-    const selectedRecord = records.find((item) => item.date === this.data.selectedDate) || createDefaultRecord(this.data.selectedDate);
-    const analysis = getAnalysis(records, settings);
-    const calendarDays = buildCalendarDays(currentMonthDate).map((day) => {
-      const record = records.find((item) => item.date === day.date);
-      const isPredicted = prediction.nextPeriodStart && prediction.nextPeriodEnd
-        ? day.date >= prediction.nextPeriodStart && day.date <= prediction.nextPeriodEnd
-        : false;
-      return {
+    this.setData({ isLoading: true });
+    try {
+      const [settings, records] = await Promise.all([
+        loadSettings(),
+        loadRecords(),
+      ]);
+      const currentMonthDate = parseDate(this.data.currentMonth);
+      const prediction = getPeriodPrediction(records, settings);
+      const intervals = buildPeriodIntervals(records, settings);
+      const selectedRecord = records.find(
+        (item) => item.date === this.data.selectedDate,
+      );
+      const ovulationRangeStart = prediction.ovulationDate
+        ? addDays(prediction.ovulationDate, -1)
+        : "";
+      const ovulationRangeEnd = prediction.ovulationDate
+        ? addDays(prediction.ovulationDate, 1)
+        : "";
+      const calendarDays = buildCalendarDays(currentMonthDate).map((day) => ({
         ...day,
-        status: record && (record.flow !== "none" || record.isPeriodStart || record.isPeriodEnd)
-          ? "period"
-          : day.date === prediction.ovulationDate
-            ? "ovulation"
-            : isPredicted
-              ? "predicted"
-              : "",
+        isActualPeriod: intervals.some(
+          (interval) =>
+            isBetween(day.date, interval.startDate, interval.endDate),
+        ),
+        isPredictedPeriod: Boolean(
+          prediction.nextPeriodStart &&
+            prediction.nextPeriodEnd &&
+            isBetween(
+              day.date,
+              prediction.nextPeriodStart,
+              prediction.nextPeriodEnd,
+            ),
+        ),
+        isOvulationRange: Boolean(
+          ovulationRangeStart &&
+            ovulationRangeEnd &&
+            isBetween(day.date, ovulationRangeStart, ovulationRangeEnd),
+        ),
+        isOvulationDay: day.date === prediction.ovulationDate,
         isSelected: day.date === this.data.selectedDate,
-      };
-    });
+      }));
 
-    this.setData({
-      monthTitle: getMonthTitle(currentMonthDate),
-      calendarDays,
-      selectedRecord,
-      symptomItems: buildSymptomItems(selectedRecord.symptoms),
-      analysis,
-    });
+      this.setData({
+        monthTitle: getMonthTitle(currentMonthDate),
+        calendarDays,
+        summary: selectedSummary(selectedRecord),
+      });
+    } catch (error) {
+      console.warn("load calendar failed", error);
+      wx.showToast({ title: "暂时无法更新日历", icon: "none" });
+    } finally {
+      this.setData({ isLoading: false });
+    }
   },
 
   prevMonth() {
@@ -122,71 +137,14 @@ Page({
   },
 
   selectDate(event) {
-    const date = event.currentTarget.dataset.date;
-    this.setData({ selectedDate: date }, () => this.loadPage());
+    this.setData({ selectedDate: event.currentTarget.dataset.date }, () =>
+      this.loadPage(),
+    );
   },
 
-  setPeriodStart(event) {
-    this.updateSelectedRecord("isPeriodStart", event.detail.value);
-  },
-
-  setPeriodEnd(event) {
-    this.updateSelectedRecord("isPeriodEnd", event.detail.value);
-  },
-
-  chooseFlow(event) {
-    this.updateSelectedRecord("flow", event.currentTarget.dataset.value);
-  },
-
-  choosePain(event) {
-    this.updateSelectedRecord("pain", event.currentTarget.dataset.value);
-  },
-
-  chooseDischarge(event) {
-    this.updateSelectedRecord("discharge", event.currentTarget.dataset.value);
-  },
-
-  chooseMood(event) {
-    this.updateSelectedRecord("mood", event.currentTarget.dataset.value);
-  },
-
-  toggleSymptom(event) {
-    const value = event.currentTarget.dataset.value;
-    const record = this.data.selectedRecord as PeriodRecord;
-    const symptoms = record.symptoms.includes(value)
-      ? record.symptoms.filter((item) => item !== value)
-      : [...record.symptoms, value];
-    this.updateSelectedRecord("symptoms", symptoms);
-  },
-
-  onNotesInput(event) {
-    this.updateSelectedRecord("notes", event.detail.value);
-  },
-
-  updateSelectedRecord(key: string, value) {
-    const selectedRecord = {
-      ...(this.data.selectedRecord as PeriodRecord),
-      [key]: value,
-    };
-    this.setData({
-      selectedRecord,
-      symptomItems: buildSymptomItems(selectedRecord.symptoms),
+  editSelectedDate() {
+    wx.navigateTo({
+      url: `/pages/record-editor/index?date=${this.data.selectedDate}`,
     });
-  },
-
-  async saveRecord() {
-    wx.showLoading({ title: "保存中" });
-    const record = this.data.selectedRecord as PeriodRecord;
-    try {
-      await savePeriodRecord(record);
-      wx.hideLoading();
-      wx.showToast({ title: "已保存", icon: "success" });
-      this.loadPage();
-    } catch (error) {
-      wx.hideLoading();
-      console.warn("save record failed", error);
-      wx.showToast({ title: "已本地保存", icon: "none" });
-      this.loadPage();
-    }
   },
 });
