@@ -1,7 +1,10 @@
 import { formatDate } from "../../utils/date";
-import { getPeriodPrediction } from "../../utils/period";
+import { buildCycleRingModel } from "../../services/chart-presenter";
+import { DEFAULT_SETTINGS, getPeriodPrediction } from "../../utils/period";
 import { getPeriodRecords, getUserSettings, savePeriodRecord } from "../../utils/storage";
 import { PeriodRecord } from "../../types/period";
+
+const INITIAL_PREDICTION = getPeriodPrediction([], DEFAULT_SETTINGS);
 
 Page({
   data: {
@@ -14,6 +17,7 @@ Page({
     nextPeriodEnd: "--",
     ovulationDate: "--",
     todayRecord: null,
+    ringModel: buildCycleRingModel(INITIAL_PREDICTION, DEFAULT_SETTINGS),
     isLoading: true,
   },
 
@@ -38,6 +42,7 @@ Page({
       nextPeriodEnd: prediction.nextPeriodEnd || "--",
       ovulationDate: prediction.ovulationDate || "--",
       todayRecord,
+      ringModel: buildCycleRingModel(prediction, settings),
       isLoading: false,
     });
   },

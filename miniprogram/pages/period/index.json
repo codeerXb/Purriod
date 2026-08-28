@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "Purriod"
+  "navigationBarTitleText": "Purriod",
+  "usingComponents": {
+    "cycle-ring": "/components/cycle-ring/index"
+  }
 }

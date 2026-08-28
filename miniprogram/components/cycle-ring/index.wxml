@@ -1,0 +1,16 @@
+<view class="ring-component {{model.isStale ? 'stale' : ''}}">
+  <view class="ring-shell">
+    <canvas type="2d" id="cycleCanvas" class="ring-canvas"></canvas>
+    <view class="ring-center">
+      <view class="ring-title">{{model.centerTitle}}</view>
+      <view class="ring-value">{{model.centerValue}}</view>
+    </view>
+  </view>
+  <view class="ring-helper">{{model.helperText}}</view>
+  <view class="ring-legend">
+    <view wx:for="{{model.segments}}" wx:key="key" class="ring-legend-item">
+      <text class="ring-legend-dot" style="background: {{item.color}}"></text>
+      <text>{{item.label}}</text>
+    </view>
+  </view>
+</view>

@@ -8,13 +8,7 @@
   </view>
 
   <view class="cycle-card card {{phaseKey}}">
-    <view class="cycle-ring">
-      <view class="cycle-inner">
-        <view class="phase-name">{{phaseName}}</view>
-        <view class="day-text">{{dayText}}</view>
-      </view>
-    </view>
-    <view class="helper-text">{{helperText}}</view>
+    <cycle-ring model="{{ringModel}}" />
   </view>
 
   <view class="forecast-grid">
