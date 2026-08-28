@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": ".test-dist",
+    "rootDir": "."
+  },
+  "include": [
+    "miniprogram/types/**/*.ts",
+    "miniprogram/constants/**/*.ts",
+    "miniprogram/utils/date.ts",
+    "miniprogram/services/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "cloudfunctions"
+  ]
+}
