@@ -93,6 +93,17 @@ test("successful flush removes a pending operation", async () => {
   assert.equal(wxMock.cloudRecords().length, 1);
 });
 
+test("concurrent flushes apply one queued write only once", async () => {
+  wxMock.failWrites(true);
+  await saveRecord(record("2026-08-28"));
+  wxMock.failWrites(false);
+
+  await Promise.all([flushPendingSync(), flushPendingSync()]);
+
+  assert.equal(wxMock.cloudRecords().length, 1);
+  assert.equal(getPendingSyncCount(), 0);
+});
+
 test("failed flush keeps its operation for retry", async () => {
   wxMock.failWrites(true);
   await saveSettings({ cycleLength: 30, periodLength: 6, schemaVersion: 1 });

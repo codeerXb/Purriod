@@ -12,6 +12,7 @@ import {
 } from "../types/period";
 
 const PAGE_SIZE = 20;
+let activeFlush: Promise<SaveResult> | null = null;
 
 function database() {
   return wx.cloud.database();
@@ -108,7 +109,7 @@ export function hasPendingOperation(entity: SyncOperation["entity"], key: string
   return getSyncQueue().some((item) => item.entity === entity && item.key === key);
 }
 
-export async function flushPendingSync(): Promise<SaveResult> {
+async function performPendingSync(): Promise<SaveResult> {
   const snapshot = getSyncQueue();
   for (const operation of snapshot) {
     try {
@@ -131,6 +132,15 @@ export async function flushPendingSync(): Promise<SaveResult> {
 
   const pendingCount = getPendingSyncCount();
   return { synced: pendingCount === 0, pendingCount };
+}
+
+export function flushPendingSync(): Promise<SaveResult> {
+  if (activeFlush) return activeFlush;
+
+  activeFlush = performPendingSync().finally(() => {
+    activeFlush = null;
+  });
+  return activeFlush;
 }
 
 export async function pullRemoteRecords(): Promise<PeriodRecord[]> {
