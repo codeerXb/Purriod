@@ -107,3 +107,16 @@ export interface AnalysisChartModel {
   cycleBars: ChartBarItem[];
   periodBars: ChartBarItem[];
 }
+
+export interface SaveResult {
+  synced: boolean;
+  pendingCount: number;
+}
+
+export interface SyncOperation {
+  entity: "settings" | "record";
+  key: string;
+  action: "upsert" | "delete";
+  payload?: UserSettings | PeriodRecord;
+  localUpdatedAt: number;
+}

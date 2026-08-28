@@ -8,6 +8,7 @@
   "include": [
     "miniprogram/types/**/*.ts",
     "miniprogram/constants/**/*.ts",
+    "miniprogram/repositories/**/*.ts",
     "miniprogram/utils/date.ts",
     "miniprogram/services/**/*.ts"
   ],
