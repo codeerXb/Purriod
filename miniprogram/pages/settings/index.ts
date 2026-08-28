@@ -1,9 +1,13 @@
-import { getUserSettings, saveUserSettings } from "../../utils/storage";
+import {
+  loadSettings,
+  saveSettings,
+} from "../../repositories/settings-repository";
 
 Page({
   data: {
     cycleLength: 28,
     periodLength: 5,
+    syncMessage: "",
   },
 
   onLoad() {
@@ -11,7 +15,7 @@ Page({
   },
 
   async loadSettings() {
-    const settings = await getUserSettings();
+    const settings = await loadSettings();
     this.setData({
       cycleLength: settings.cycleLength,
       periodLength: settings.periodLength,
@@ -29,18 +33,23 @@ Page({
   async saveSettings() {
     wx.showLoading({ title: "保存中" });
     try {
-      await saveUserSettings({
+      const result = await saveSettings({
         cycleLength: this.data.cycleLength,
         periodLength: this.data.periodLength,
+        schemaVersion: 1,
       });
-      wx.hideLoading();
-      wx.showToast({ title: "已保存", icon: "success" });
+      const syncMessage = result.synced ? "已保存" : "已保存，待同步";
+      this.setData({ syncMessage });
+      wx.showToast({
+        title: syncMessage,
+        icon: result.synced ? "success" : "none",
+      });
       setTimeout(() => wx.navigateBack(), 600);
     } catch (error) {
-      wx.hideLoading();
       console.warn("save settings failed", error);
-      wx.showToast({ title: "已本地保存", icon: "none" });
-      setTimeout(() => wx.navigateBack(), 600);
+      wx.showToast({ title: "本地保存失败，请重试", icon: "none" });
+    } finally {
+      wx.hideLoading();
     }
   },
 });

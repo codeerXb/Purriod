@@ -1,4 +1,5 @@
 import { CLOUD_ENV_ID } from "./constants/config";
+import { flushPendingSync } from "./services/sync-service";
 
 App({
   globalData: {
@@ -14,6 +15,17 @@ App({
     wx.cloud.init({
       env: CLOUD_ENV_ID,
       traceUser: true,
+    });
+
+    flushPendingSync().catch((error) => {
+      console.warn("initial Purriod sync pending", error);
+    });
+    wx.onNetworkStatusChange((status) => {
+      if (status.isConnected) {
+        flushPendingSync().catch((error) => {
+          console.warn("network recovery sync pending", error);
+        });
+      }
     });
   },
 });

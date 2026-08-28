@@ -25,4 +25,5 @@
   </view>
 
   <button class="primary-button save-button" bindtap="saveSettings">保存设置</button>
+  <view wx:if="{{syncMessage}}" class="sync-message">{{syncMessage}}</view>
 </view>

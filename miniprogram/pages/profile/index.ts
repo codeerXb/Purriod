@@ -1,4 +1,5 @@
-import { clearAllUserData, getUserSettings } from "../../utils/storage";
+import { loadSettings } from "../../repositories/settings-repository";
+import { deleteAllUserData } from "../../services/user-data-service";
 
 Page({
   data: {
@@ -11,7 +12,7 @@ Page({
   },
 
   async loadSettings() {
-    const settings = await getUserSettings();
+    const settings = await loadSettings();
     this.setData({
       cycleLength: settings.cycleLength,
       periodLength: settings.periodLength,
@@ -25,7 +26,7 @@ Page({
   showPrivacy() {
     wx.showModal({
       title: "隐私说明",
-      content: "Purriod 仅收集经期日期、流量、痛经、白带、心情和症状标签，用于周期预测与个人统计分析。数据仅用于本小程序功能，不提供医疗诊断或治疗建议。",
+      content: "Purriod 仅保存你主动填写的经期日期、流量、痛经、白带、心情、症状和备注，用于本人的周期预测与趋势统计。数据保存在本机及你的微信云开发用户空间，不用于广告，也不提供医疗诊断。你可以随时通过“清除我的数据”删除本地与云端内容。",
       showCancel: false,
       confirmText: "知道了",
     });
@@ -40,28 +41,25 @@ Page({
     });
   },
 
-  clearData() {
-    wx.showModal({
+  async clearData() {
+    const result = await wx.showModal({
       title: "清除数据",
-      content: "确认清除你的经期设置和所有记录吗？此操作不可恢复。",
+      content: "确认删除云端和本机的经期设置与全部记录吗？此操作不可恢复，并且需要联网完成。",
       confirmText: "确认清除",
-      confirmColor: "#D4768A",
-      success: async (result) => {
-        if (!result.confirm) {
-          return;
-        }
-        wx.showLoading({ title: "清除中" });
-        try {
-          await clearAllUserData();
-          wx.hideLoading();
-          wx.showToast({ title: "已清除", icon: "success" });
-          this.loadSettings();
-        } catch (error) {
-          wx.hideLoading();
-          console.warn("clear data failed", error);
-          wx.showToast({ title: "清除失败", icon: "none" });
-        }
-      },
+      confirmColor: "#B65F72",
     });
+    if (!result.confirm) return;
+
+    wx.showLoading({ title: "清除中" });
+    try {
+      await deleteAllUserData();
+      this.setData({ cycleLength: 28, periodLength: 5 });
+      wx.showToast({ title: "已全部清除", icon: "success" });
+    } catch (error) {
+      console.warn("clear data failed", error);
+      wx.showToast({ title: "云端删除未完成，本地数据已保留", icon: "none" });
+    } finally {
+      wx.hideLoading();
+    }
   },
 });
