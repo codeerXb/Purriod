@@ -1,0 +1,51 @@
+<view class="page period-page">
+  <view class="hero">
+    <view>
+      <view class="page-title">Purriod</view>
+      <view class="page-subtitle">温柔记录你的周期节奏</view>
+    </view>
+    <image class="avatar" src="/images/avatar.png" mode="aspectFill" />
+  </view>
+
+  <view class="cycle-card card {{phaseKey}}">
+    <view class="cycle-ring">
+      <view class="cycle-inner">
+        <view class="phase-name">{{phaseName}}</view>
+        <view class="day-text">{{dayText}}</view>
+      </view>
+    </view>
+    <view class="helper-text">{{helperText}}</view>
+  </view>
+
+  <view class="forecast-grid">
+    <view class="forecast-card">
+      <view class="forecast-label">下次经期</view>
+      <view class="forecast-value">{{nextPeriodStart}}</view>
+    </view>
+    <view class="forecast-card">
+      <view class="forecast-label">预计结束</view>
+      <view class="forecast-value">{{nextPeriodEnd}}</view>
+    </view>
+    <view class="forecast-card">
+      <view class="forecast-label">排卵日</view>
+      <view class="forecast-value">{{ovulationDate}}</view>
+    </view>
+  </view>
+
+  <view class="card today-card">
+    <view class="section-title">今日记录</view>
+    <view class="record-summary" wx:if="{{todayRecord}}">
+      <view>流量：{{todayRecord.flow}}</view>
+      <view>痛经：{{todayRecord.pain}}</view>
+      <view>白带：{{todayRecord.discharge}}</view>
+      <view>心情：{{todayRecord.mood}}</view>
+    </view>
+    <view class="empty-record" wx:else>今天还没有记录，轻点一下就好。</view>
+    <button class="secondary-button" bindtap="goRecords">去记录详情</button>
+  </view>
+
+  <view class="actions">
+    <button class="primary-button" bindtap="markPeriodStart">记录月经开始</button>
+    <button class="secondary-button" bindtap="markPeriodEnd">记录月经结束</button>
+  </view>
+</view>

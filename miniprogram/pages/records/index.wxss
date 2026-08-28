@@ -1,0 +1,163 @@
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.month-button {
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 50%;
+  color: #D4768A;
+  background: #FFF1F4;
+  font-size: 46rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.week-row,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.week-row {
+  margin-top: 28rpx;
+  color: #9E9E9E;
+  font-size: 24rpx;
+  text-align: center;
+}
+
+.calendar-grid {
+  gap: 10rpx 0;
+  margin-top: 18rpx;
+}
+
+.calendar-day {
+  position: relative;
+  width: 76rpx;
+  height: 76rpx;
+  margin: 0 auto;
+  border-radius: 24rpx;
+  color: #3D3D3D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+}
+
+.calendar-day.muted-day {
+  color: #D5C5CA;
+}
+
+.calendar-day.today {
+  border: 2rpx solid #F0C4CD;
+}
+
+.calendar-day.selected {
+  color: #FFFFFF;
+  background: #D4768A;
+}
+
+.calendar-day.period:not(.selected) {
+  background: #F6D6DD;
+  color: #D4768A;
+}
+
+.calendar-day.predicted:not(.selected) {
+  background: #FAECEF;
+  color: #C58A98;
+}
+
+.calendar-day.ovulation:not(.selected) {
+  background: #EEE8F5;
+  color: #A890C0;
+}
+
+.day-dot {
+  position: absolute;
+  bottom: 10rpx;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.legend {
+  display: flex;
+  gap: 28rpx;
+  margin-top: 28rpx;
+  color: #9E9E9E;
+  font-size: 24rpx;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 14rpx;
+  height: 14rpx;
+  margin-right: 8rpx;
+  border-radius: 50%;
+}
+
+.period-dot { background: #D4768A; }
+.predicted-dot { background: #F0C4CD; }
+.ovulation-dot { background: #A890C0; }
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F5E1E6;
+}
+
+.field-block {
+  margin-top: 28rpx;
+}
+
+.field-title {
+  margin-bottom: 18rpx;
+  color: #6E6066;
+  font-weight: 700;
+}
+
+.chip-row {
+  display: flex;
+  gap: 16rpx;
+}
+
+.chip-row.wrap {
+  flex-wrap: wrap;
+}
+
+.notes {
+  width: 100%;
+  min-height: 132rpx;
+  margin: 28rpx 0;
+  padding: 22rpx;
+  border-radius: 24rpx;
+  background: #FFF8F9;
+  color: #3D3D3D;
+  font-size: 26rpx;
+}
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+  margin-top: 24rpx;
+  text-align: center;
+}
+
+.analysis-value {
+  color: #D4768A;
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.analysis-label {
+  margin-top: 8rpx;
+  color: #9E9E9E;
+  font-size: 24rpx;
+}

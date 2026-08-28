@@ -1,0 +1,46 @@
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.profile-avatar {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 32rpx;
+  box-shadow: 0 12rpx 30rpx rgba(212, 118, 138, 0.18);
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #F5E1E6;
+}
+
+.menu-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.menu-title {
+  color: #3D3D3D;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.menu-title.danger {
+  color: #D4768A;
+}
+
+.menu-desc {
+  margin-top: 8rpx;
+  color: #9E9E9E;
+  font-size: 24rpx;
+}
+
+.arrow {
+  color: #CDBCC2;
+  font-size: 44rpx;
+}

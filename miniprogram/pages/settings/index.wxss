@@ -1,0 +1,30 @@
+.setting-card {
+  margin-top: 30rpx;
+}
+
+.setting-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22rpx;
+}
+
+.setting-desc {
+  margin-top: 8rpx;
+  color: #9E9E9E;
+  font-size: 24rpx;
+}
+
+.setting-value {
+  min-width: 108rpx;
+  padding: 12rpx 18rpx;
+  border-radius: 999rpx;
+  color: #D4768A;
+  background: #FFF1F4;
+  font-weight: 800;
+  text-align: center;
+}
+
+.save-button {
+  margin-top: 42rpx;
+}

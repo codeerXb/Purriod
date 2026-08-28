@@ -1,0 +1,28 @@
+<view class="page settings-page">
+  <view class="page-title">经期设置</view>
+  <view class="page-subtitle">先给 Purriod 一个基础节奏，后续会根据记录自动校准。</view>
+
+  <view class="card setting-card">
+    <view class="setting-header">
+      <view>
+        <view class="section-title">周期长度</view>
+        <view class="setting-desc">两次月经开始之间的间隔</view>
+      </view>
+      <view class="setting-value">{{cycleLength}}天</view>
+    </view>
+    <slider min="21" max="45" step="1" value="{{cycleLength}}" activeColor="#D4768A" backgroundColor="#F0D4DA" bindchange="onCycleChange" />
+  </view>
+
+  <view class="card setting-card">
+    <view class="setting-header">
+      <view>
+        <view class="section-title">经期长度</view>
+        <view class="setting-desc">每次月经通常持续的天数</view>
+      </view>
+      <view class="setting-value">{{periodLength}}天</view>
+    </view>
+    <slider min="2" max="10" step="1" value="{{periodLength}}" activeColor="#D4768A" backgroundColor="#F0D4DA" bindchange="onPeriodChange" />
+  </view>
+
+  <button class="primary-button save-button" bindtap="saveSettings">保存设置</button>
+</view>

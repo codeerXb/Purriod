@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "pages/period/index",
+    "pages/records/index",
+    "pages/profile/index",
+    "pages/settings/index"
+  ],
+  "window": {
+    "backgroundColor": "#FAF0F2",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FAF0F2",
+    "navigationBarTitleText": "Purriod",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#9E9E9E",
+    "selectedColor": "#D4768A",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/period/index",
+        "text": "经期",
+        "iconPath": "images/tabbar/period.png",
+        "selectedIconPath": "images/tabbar/period-active.png"
+      },
+      {
+        "pagePath": "pages/records/index",
+        "text": "记录",
+        "iconPath": "images/tabbar/records.png",
+        "selectedIconPath": "images/tabbar/records-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "images/tabbar/profile.png",
+        "selectedIconPath": "images/tabbar/profile-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}
