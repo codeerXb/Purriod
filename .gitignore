@@ -2,6 +2,10 @@
 node_modules/
 miniprogram_npm/
 
+# Local worktrees and test output
+.worktrees/
+.test-dist/
+
 # macOS
 .DS_Store
 
