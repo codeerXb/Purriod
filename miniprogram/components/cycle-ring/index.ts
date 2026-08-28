@@ -1,4 +1,5 @@
 import { CycleRingModel } from "../../types/period";
+import { getCanvasPixelRatio } from "../../utils/device";
 
 const FULL_CIRCLE = Math.PI * 2;
 const START_ANGLE = -Math.PI / 2;
@@ -38,7 +39,7 @@ Component({
         .exec((result) => {
           const canvasInfo = result?.[0];
           if (!canvasInfo?.node || !canvasInfo.width || !canvasInfo.height) return;
-          const dpr = wx.getSystemInfoSync().pixelRatio || 1;
+          const dpr = getCanvasPixelRatio();
           const canvas = canvasInfo.node;
           canvas.width = canvasInfo.width * dpr;
           canvas.height = canvasInfo.height * dpr;

@@ -1,5 +1,6 @@
 import { CLOUD_ENV_ID } from "./constants/config";
 import { flushPendingSync } from "./services/sync-service";
+import "./utils/device";
 
 App({
   globalData: {

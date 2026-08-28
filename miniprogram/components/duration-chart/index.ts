@@ -1,4 +1,5 @@
 import { ChartBarItem } from "../../types/period";
+import { getCanvasPixelRatio } from "../../utils/device";
 
 function roundedRect(context, x, y, width, height, radius) {
   const safeRadius = Math.min(radius, height / 2, width / 2);
@@ -46,7 +47,7 @@ Component({
         .exec((result) => {
           const info = result?.[0];
           if (!info?.node || !info.width || !info.height) return;
-          const dpr = wx.getSystemInfoSync().pixelRatio || 1;
+          const dpr = getCanvasPixelRatio();
           const canvas = info.node;
           canvas.width = info.width * dpr;
           canvas.height = info.height * dpr;

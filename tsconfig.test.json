@@ -10,6 +10,7 @@
     "miniprogram/constants/**/*.ts",
     "miniprogram/repositories/**/*.ts",
     "miniprogram/utils/date.ts",
+    "miniprogram/utils/device.ts",
     "miniprogram/services/**/*.ts"
   ],
   "exclude": [
