@@ -76,3 +76,34 @@ export interface PeriodAnalysis {
   cycleTrends: CycleTrendItem[];
   periodTrends: PeriodDurationItem[];
 }
+
+export interface CycleRingSegment {
+  key: "period" | "follicular" | "ovulation" | "luteal";
+  label: string;
+  days: number;
+  color: string;
+}
+
+export interface CycleRingModel {
+  segments: CycleRingSegment[];
+  totalDays: number;
+  currentDay: number;
+  centerTitle: string;
+  centerValue: string;
+  helperText: string;
+  isStale: boolean;
+}
+
+export interface ChartBarItem {
+  key: string;
+  label: string;
+  value: number;
+  valueLabel: string;
+  deltaLabel: string;
+  variant: "actual" | "estimated";
+}
+
+export interface AnalysisChartModel {
+  cycleBars: ChartBarItem[];
+  periodBars: ChartBarItem[];
+}
