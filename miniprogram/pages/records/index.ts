@@ -94,6 +94,7 @@ Page({
             isBetween(day.date, interval.startDate, interval.endDate),
         ),
         isPredictedPeriod: Boolean(
+          !prediction.isStale &&
           prediction.nextPeriodStart &&
             prediction.nextPeriodEnd &&
             isBetween(
@@ -103,6 +104,7 @@ Page({
             ),
         ),
         isOvulationRange: Boolean(
+          !prediction.isStale &&
           ovulationRangeStart &&
             ovulationRangeEnd &&
             isBetween(day.date, ovulationRangeStart, ovulationRangeEnd),

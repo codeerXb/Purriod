@@ -27,16 +27,22 @@
   </view>
 
   <view class="card today-card">
-    <view class="section-title">今日记录</view>
-    <view class="record-summary" wx:if="{{todayRecord}}">
-      <view>流量：{{todayRecord.flow}}</view>
-      <view>痛经：{{todayRecord.pain}}</view>
-      <view>白带：{{todayRecord.discharge}}</view>
-      <view>心情：{{todayRecord.mood}}</view>
+    <view class="today-header">
+      <view class="section-title">今日记录</view>
+      <view wx:if="{{todaySummary}}" class="today-status">{{todaySummary.periodStatus}}</view>
+    </view>
+    <view class="record-summary" wx:if="{{todaySummary}}">
+      <view><text>流量</text>{{todaySummary.flow}}</view>
+      <view><text>痛经</text>{{todaySummary.pain}}</view>
+      <view><text>白带</text>{{todaySummary.discharge}}</view>
+      <view><text>心情</text>{{todaySummary.mood}}</view>
+      <view class="summary-wide"><text>症状</text>{{todaySummary.symptoms}}</view>
     </view>
     <view class="empty-record" wx:else>今天还没有记录，轻点一下就好。</view>
     <button class="secondary-button" bindtap="goRecords">去记录详情</button>
   </view>
+
+  <view wx:if="{{syncMessage}}" class="sync-banner">{{syncMessage}}</view>
 
   <view class="actions">
     <button class="primary-button" bindtap="markPeriodStart">记录月经开始</button>

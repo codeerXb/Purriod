@@ -54,6 +54,38 @@
   color: #6E6066;
 }
 
+.today-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.today-status {
+  padding: 9rpx 16rpx;
+  border-radius: 999rpx;
+  color: #A25467;
+  background: #FAE8EC;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.record-summary view {
+  padding: 16rpx;
+  border-radius: 18rpx;
+  background: #FFF7F9;
+}
+
+.record-summary text {
+  display: block;
+  margin-bottom: 6rpx;
+  color: #A39399;
+  font-size: 21rpx;
+}
+
+.record-summary .summary-wide {
+  grid-column: 1 / -1;
+}
+
 .empty-record {
   margin: 24rpx 0;
   color: #9E9E9E;
@@ -64,4 +96,14 @@
   grid-template-columns: 1fr;
   gap: 18rpx;
   margin-top: 30rpx;
+}
+
+.sync-banner {
+  margin-top: 20rpx;
+  padding: 16rpx 22rpx;
+  border-radius: 20rpx;
+  color: #7A686E;
+  background: rgba(255, 255, 255, 0.76);
+  font-size: 23rpx;
+  text-align: center;
 }
